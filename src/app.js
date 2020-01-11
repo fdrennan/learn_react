@@ -1,18 +1,7 @@
-const app = {
-    title: 'Visibility Toggle',
-    subtitle: 'hey, These are some details you can now see',
-    buttonName: 'Hide it'
-};
+let visibility = true;
 
-
-const onRemoveAll = () => {
-    if (app.subtitle) {
-        app.subtitle = '';
-        app.buttonName = 'Show it';
-    } else {
-        app.subtitle = 'hey, These are some details you can now see';
-        app.buttonName = 'Hide it';
-    }
+const toggleVisibility = () => {
+    visibility = !visibility;
     renderIt();
 };
 
@@ -22,8 +11,12 @@ function renderIt() {
     const template = (
         <div>
             <h1>{app.title}</h1>
-            <button onClick={onRemoveAll}>{app.buttonName}</button>
-            {app.subtitle && <p>{app.subtitle}</p>}
+            <button onClick={toggleVisibility}>{
+                visibility ? 'You can see me' : 'Now you cant'
+            }</button>
+            <p>
+                {visibility && 'Yes you can'}
+            </p>
         </div>
     );
     ReactDOM.render(template, appRoot);

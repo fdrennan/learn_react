@@ -1,19 +1,9 @@
 'use strict';
 
-var app = {
-    title: 'Visibility Toggle',
-    subtitle: 'hey, These are some details you can now see',
-    buttonName: 'Hide it'
-};
+var visibility = true;
 
-var onRemoveAll = function onRemoveAll() {
-    if (app.subtitle) {
-        app.subtitle = '';
-        app.buttonName = 'Show it';
-    } else {
-        app.subtitle = 'hey, These are some details you can now see';
-        app.buttonName = 'Hide it';
-    }
+var toggleVisibility = function toggleVisibility() {
+    visibility = !visibility;
     renderIt();
 };
 
@@ -30,13 +20,13 @@ function renderIt() {
         ),
         React.createElement(
             'button',
-            { onClick: onRemoveAll },
-            app.buttonName
+            { onClick: toggleVisibility },
+            visibility ? 'You can see me' : 'Now you cant'
         ),
-        app.subtitle && React.createElement(
+        React.createElement(
             'p',
             null,
-            app.subtitle
+            visibility && 'Yes you can'
         )
     );
     ReactDOM.render(template, appRoot);
