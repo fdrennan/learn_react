@@ -8,85 +8,79 @@ var app = {
     options: ['One', 'Two']
 };
 
-var template = React.createElement(
-    'div',
-    null,
-    React.createElement(
-        'h1',
-        null,
-        app.title
-    ),
-    app.subtitle && React.createElement(
-        'p',
-        null,
-        app.subtitle
-    ),
-    React.createElement(
-        'p',
-        null,
-        app.options.length > 0 ? 'Here are your options' : 'No options'
-    ),
-    React.createElement(
-        'ol',
-        null,
-        React.createElement(
-            'li',
-            null,
-            'Item One'
-        ),
-        React.createElement(
-            'li',
-            null,
-            'Item Two'
-        )
-    )
-);
+var onFormSubmit = function onFormSubmit(e) {
+    e.preventDefault();
+    var option = e.target.elements.option.value;
 
-var addOne = function addOne() {
-    count++;
-    renderCounterApp();
-};
-var minusOne = function minusOne() {
-    count--;
-    renderCounterApp();
-};
-var reset = function reset() {
-    count = 0;
-    renderCounterApp();
+    if (option) {
+        app.options.push(option);
+        e.target.elements.option.value = '';
+    }
+    renderIt();
 };
 
-var count = 0;
+var removeAll = function removeAll() {
+    app.options = [];
+    renderIt();
+};
 
 var appRoot = document.getElementById('app');
 
-var renderCounterApp = function renderCounterApp() {
-    var templateTwo = React.createElement(
+function renderIt() {
+    var template = React.createElement(
         'div',
         null,
         React.createElement(
             'h1',
             null,
-            'Count: ',
-            count
+            app.title
+        ),
+        app.subtitle && React.createElement(
+            'p',
+            null,
+            app.subtitle
+        ),
+        React.createElement(
+            'p',
+            null,
+            app.options.length > 0 ? 'Here are your options' : 'No options'
+        ),
+        React.createElement(
+            'p',
+            null,
+            app.options.length
         ),
         React.createElement(
             'button',
-            { onClick: addOne },
-            '+1'
+            { onClick: removeAll },
+            'Remove All'
         ),
         React.createElement(
-            'button',
-            { onClick: minusOne },
-            '-1'
+            'ol',
+            null,
+            React.createElement(
+                'li',
+                null,
+                'Item One'
+            ),
+            React.createElement(
+                'li',
+                null,
+                'Item Two'
+            )
         ),
         React.createElement(
-            'button',
-            { onClick: reset },
-            'Reset'
+            'form',
+            { onSubmit: onFormSubmit },
+            React.createElement('input', { type: 'text', name: 'option' }),
+            React.createElement(
+                'button',
+                null,
+                'Add Option'
+            )
         )
     );
-
-    ReactDOM.render(templateTwo, appRoot);
+    ReactDOM.render(template, appRoot);
 };
 
-renderCounterApp();
+renderIt();
