@@ -5,7 +5,7 @@ console.log('App.js is running');
 var app = {
     title: 'Indecision App',
     subtitle: 'Put your life in the hands of the computer',
-    options: ['One', 'Two']
+    options: []
 };
 
 var onFormSubmit = function onFormSubmit(e) {
@@ -19,7 +19,7 @@ var onFormSubmit = function onFormSubmit(e) {
     renderIt();
 };
 
-var removeAll = function removeAll() {
+var onRemoveAll = function onRemoveAll() {
     app.options = [];
     renderIt();
 };
@@ -52,22 +52,20 @@ function renderIt() {
         ),
         React.createElement(
             'button',
-            { onClick: removeAll },
+            { onClick: onRemoveAll },
             'Remove All'
         ),
         React.createElement(
             'ol',
             null,
-            React.createElement(
-                'li',
-                null,
-                'Item One'
-            ),
-            React.createElement(
-                'li',
-                null,
-                'Item Two'
-            )
+            app.options.map(function (option) {
+                return React.createElement(
+                    'li',
+                    { key: option },
+                    'Option: ',
+                    option
+                );
+            })
         ),
         React.createElement(
             'form',
