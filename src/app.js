@@ -1,9 +1,10 @@
 console.log('App.js is running');
 
+
 const app = {
     title: 'Indecision App',
     subtitle: 'Put your life in the hands of the computer',
-    options: ['One', 'Two']
+    options: []
 };
 
 const onFormSubmit = (e) => {
@@ -17,7 +18,7 @@ const onFormSubmit = (e) => {
     renderIt();
 };
 
-const removeAll = () => {
+const onRemoveAll = () => {
     app.options = [];
     renderIt();
 };
@@ -31,11 +32,13 @@ function renderIt() {
             {app.subtitle && <p>{app.subtitle}</p>}
             <p>{app.options.length > 0 ? 'Here are your options' : 'No options'}</p>
             <p>{app.options.length}</p>
-            <button onClick={removeAll}>Remove All</button>
+            <button onClick={onRemoveAll}>Remove All</button>
             <ol>
-                <li>Item One</li>
-                <li>Item Two</li>
-                {/*{printOptions(app.options)}*/}
+                {
+                    app.options.map((option) => {
+                        return <li key={option} >Option: {option}</li>
+                    })
+                }
             </ol>
             <form onSubmit={onFormSubmit}>
                 <input type="text" name="option"/>
