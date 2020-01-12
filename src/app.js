@@ -10,20 +10,12 @@ class IndecisionApp extends React.Component {
         };
     }
     handleDeleteOptions() {
-        this.setState(() => {
-            return {
-                options: []
-            };
-        });
+        this.setState(() => ({options: []}))
     }
     handlePick() {
         const randomValue = Math.floor(Math.random()*this.state.options.length);
         const option = this.state.options[randomValue];
-        this.setState(() => {
-            return {
-                option: option
-            };
-        });
+        this.setState(() => ({option: option}));
     }
     handleAddOption(option) {
         if (!option) {
@@ -122,12 +114,7 @@ class AddOption extends React.Component {
         e.preventDefault();
         const option = e.target.elements.option.value.trim();
         const error = this.props.handleAddOption(option);
-
-        this.setState(() => {
-            return {
-                error: error
-            };
-        });
+        this.setState(() => ({error: error}));
     }
     render() {
         return (
