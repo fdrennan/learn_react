@@ -22,12 +22,35 @@ var IndecisionApp = function (_React$Component) {
         _this.handleAddOption = _this.handleAddOption.bind(_this);
         _this.state = {
             options: props.options,
-            option: ''
+            option: '',
+            data: []
         };
         return _this;
     }
 
     _createClass(IndecisionApp, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            fetch('http://127.0.0.1:6426/data').then(function (results) {
+                return results.json();
+            }).then(function (data) {
+                // console.log(JSON.parse(data).map((x) => x.mpg));
+                _this2.setState({ data: JSON.parse(data) });
+            });
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            console.log('componentDidUpdate');
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            console.log('Unmounte');
+        }
+    }, {
         key: 'handleDeleteOptions',
         value: function handleDeleteOptions() {
             this.setState(function () {
@@ -82,7 +105,8 @@ var IndecisionApp = function (_React$Component) {
                     handleDeleteOptions: this.handleDeleteOptions,
                     handleDeleteOption: this.handleDeleteOption
                 }),
-                React.createElement(AddOption, { handleAddOption: this.handleAddOption })
+                React.createElement(AddOption, { handleAddOption: this.handleAddOption }),
+                React.createElement(Random, { data: this.state.data })
             );
         }
     }]);
@@ -177,6 +201,34 @@ var Option = function Option(props) {
     );
 };
 
+// RANDOM
+var Random = function Random(props) {
+    return React.createElement(
+        'div',
+        null,
+        React.createElement(
+            'p',
+            null,
+            props.data.map(function (x) {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'ul',
+                        null,
+                        x.mpg
+                    ),
+                    React.createElement(
+                        'ul',
+                        null,
+                        x.cyl
+                    )
+                );
+            })
+        )
+    );
+};
+
 // ADDOPTION
 
 var AddOption = function (_React$Component2) {
@@ -185,13 +237,13 @@ var AddOption = function (_React$Component2) {
     function AddOption(props) {
         _classCallCheck(this, AddOption);
 
-        var _this2 = _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).call(this, props));
 
-        _this2.handleAdd = _this2.handleAdd.bind(_this2);
-        _this2.state = {
+        _this3.handleAdd = _this3.handleAdd.bind(_this3);
+        _this3.state = {
             error: undefined
         };
-        return _this2;
+        return _this3;
     }
 
     _createClass(AddOption, [{

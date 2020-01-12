@@ -7,8 +7,25 @@ class IndecisionApp extends React.Component {
         this.handleAddOption = this.handleAddOption.bind(this);
         this.state = {
             options: props.options,
-            option: ''
+            option: '',
+            data: []
         };
+    }
+    componentDidMount() {
+        fetch('http://127.0.0.1:6426/data')
+            .then(results => {
+                return results.json();
+            }).then(data => {
+                // console.log(JSON.parse(data).map((x) => x.mpg));
+                this.setState({data: JSON.parse(data)})
+        });
+
+    }
+    componentDidUpdate(prevProps, prevState) {
+        console.log('componentDidUpdate')
+    }
+    componentWillUnmount() {
+        console.log('Unmounte')
     }
     handleDeleteOptions() {
         this.setState(() => ({options: []}))
@@ -49,6 +66,7 @@ class IndecisionApp extends React.Component {
                     handleDeleteOption={this.handleDeleteOption}
                 />
                 <AddOption handleAddOption={this.handleAddOption}/>
+                <Random data={this.state.data}/>
             </div>
         );
     }
@@ -111,6 +129,20 @@ const Option = (props) => {
                 props.handleDeleteOption(props.optionText);
             }}
             >Delete Me</button>
+        </div>
+    )
+};
+
+// RANDOM
+const Random = (props) => {
+    return (
+        <div>
+            <p>{
+                props.data.map((x) => (
+                    <div><ul>{x.mpg}</ul>
+                         <ul>{x.cyl}</ul></div>
+                ))
+            }</p>
         </div>
     )
 };
