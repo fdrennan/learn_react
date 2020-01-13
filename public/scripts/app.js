@@ -31,19 +31,32 @@ var IndecisionApp = function (_React$Component) {
     _createClass(IndecisionApp, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this2 = this;
+            // fetch('http://127.0.0.1:4808/data')
+            //     .then(results => {
+            //         return results.json();
+            //     }).then(data => {
+            //         // console.log(JSON.parse(data).map((x) => x.mpg));
+            //         this.setState({data: JSON.parse(data)})
+            // });
 
-            fetch('http://127.0.0.1:6426/data').then(function (results) {
-                return results.json();
-            }).then(function (data) {
-                // console.log(JSON.parse(data).map((x) => x.mpg));
-                _this2.setState({ data: JSON.parse(data) });
-            });
+            try {
+                var json = localStorage.getItem('options');
+                var _options = JSON.parse(json);
+                if (_options) {
+                    this.setState(function () {
+                        return { options: _options };
+                    });
+                }
+            } catch (e) {}
         }
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
-            console.log('componentDidUpdate');
+            if (prevProps.options.length !== this.state.options.length) {
+                var json = JSON.stringify(this.state.options);
+                console.log(json);
+                localStorage.setItem('options', json);
+            }
         }
     }, {
         key: 'componentWillUnmount',
@@ -65,6 +78,12 @@ var IndecisionApp = function (_React$Component) {
                         return optionToRemove !== option;
                     }) };
             });
+
+            if (options) {
+                this.setState(function () {
+                    return [options];
+                });
+            }
         }
     }, {
         key: 'handlePick',
@@ -162,6 +181,11 @@ var Options = function Options(props) {
     return React.createElement(
         'div',
         null,
+        props.options.length === 0 && React.createElement(
+            'p',
+            null,
+            'Please add an option to get started'
+        ),
         React.createElement(
             'p',
             null,
@@ -237,13 +261,14 @@ var AddOption = function (_React$Component2) {
     function AddOption(props) {
         _classCallCheck(this, AddOption);
 
-        var _this3 = _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).call(this, props));
 
-        _this3.handleAdd = _this3.handleAdd.bind(_this3);
-        _this3.state = {
+        _this2.handleAdd = _this2.handleAdd.bind(_this2);
+        _this2.state = {
             error: undefined
         };
-        return _this3;
+
+        return _this2;
     }
 
     _createClass(AddOption, [{
@@ -255,6 +280,9 @@ var AddOption = function (_React$Component2) {
             this.setState(function () {
                 return { error: error };
             });
+            if (!error) {
+                e.target.elements.option.value = '';
+            }
         }
     }, {
         key: 'render',
